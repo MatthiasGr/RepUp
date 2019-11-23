@@ -1,1 +1,1 @@
-__all__ = ["you_track"]
+__all__ = ["you_track", "main"]
