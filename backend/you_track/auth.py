@@ -12,3 +12,12 @@ class YouTrackAuthorization(object):
 
     def get(self):
         return self.token
+
+"""
+[
+    {
+        "name": "User",
+        "score": 4000
+    }
+]
+"""
