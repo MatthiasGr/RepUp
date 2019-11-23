@@ -1,13 +1,23 @@
 from flask import Flask, request, session
-from .you_track.auth import YouTrackAuthorization
+from you_track.auth import YouTrackAuthorization
 import you_track.api as yt
 import json
 import db.helper as helper
+import os.path as path
+import os
 
 app = Flask(__name__)
 
+if not path.exists("secret.bin"):
+    with open("secret.bin", "wb") as f:
+        f.write(os.getrandom(32))
+
+with open("secret.bin", "rb") as f:
+    app.secret_key = f.read()
+
+
 # API Routes
-@app.route("/api/user/login", methods="POST")
+@app.route("/api/user/login", methods=["POST"])
 def login():
     token = request.json()["token"]
     auth = YouTrackAuthorization(token)
@@ -23,7 +33,7 @@ def logout():
     session["token"] = None
 
 
-@app.route("/api/leaderboard", methods="GET")
+@app.route("/api/leaderboard", methods=["GET"])
 def leaderboard():
     auth = YouTrackAuthorization(session["token"])
     #TODO: Update database entries
@@ -35,3 +45,7 @@ def leaderboard():
         return {"name": data["name"], "score": ent[1]}
     entries = list(map(mapper, entries))
     return json.dumps(entries)
+
+
+if __name__ == '__main__':
+    app.run(port=1234)
