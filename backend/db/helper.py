@@ -13,7 +13,7 @@ class Insert:
 
     @staticmethod
     def existing_achievement(achievementID):
-        return AchievementCatalog.query.filter(AchievementCatalog.achievementID == achievementID)
+        return AchievementCatalog.query.filter(AchievementCatalog.achievementID == achievementID).first()
 
     @staticmethod
     def addDB(object):
