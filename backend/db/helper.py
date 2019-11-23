@@ -45,7 +45,8 @@ class Insert:
     @staticmethod
     def newPendingIssue(userID, issueID, time_of_pending):
         if not Insert.existing_user(userID):
-            return f'User {userID} does not exist'
+            Insert.newUser(userID)
+            #return f'User {userID} does not exist'
         existing_issue = PendingReg.query.filter(PendingReg.userID == userID and PendingReg.pending_issueID == issueID)
         if existing_issue:
             return f'Issue {issueID} already pending for User {userID}'
