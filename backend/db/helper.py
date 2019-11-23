@@ -1,7 +1,10 @@
 from db.models import *
 from sqlalchemy import func
-from db import db
 
+#HACK
+import sys
+sys.path.append("..")
+from main import db
 
 class Insert:
     @staticmethod

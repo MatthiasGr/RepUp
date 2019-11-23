@@ -1,6 +1,10 @@
 from sqlalchemy import Column, Integer, VARCHAR
 from datetime import datetime
-from db import db
+
+#HACK
+import sys
+sys.path.append("..")
+from main import db
 
 
 class PointsReg(db.Model):

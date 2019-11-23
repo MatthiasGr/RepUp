@@ -5,15 +5,16 @@ import json
 import db.helper as helper
 import os.path as path
 import os
+from db.config import Config
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+#dbm.db = db
 
-if not path.exists("secret.bin"):
-    with open("secret.bin", "wb") as f:
-        f.write(os.getrandom(32))
 
-with open("secret.bin", "rb") as f:
-    app.secret_key = f.read()
+app.secret_key = b'ZsaRkUmTSumtrk94gQ4edHf5AFYEWR4n'
 
 
 # API Routes
@@ -31,6 +32,7 @@ def login():
 @app.route("/api/user/logout", methods=["GET", "POST"])
 def logout():
     session["token"] = None
+    return json.dumps("OK")
 
 
 @app.route("/api/leaderboard", methods=["GET"])
