@@ -2,6 +2,7 @@
 # It contains just the functions we need
 
 import requests
+import json
 from .auth import YouTrackAuthorization
 
 STATUS_UNAUTHORIZED = 401
