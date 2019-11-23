@@ -41,8 +41,8 @@ class User(object):
         return 200 <= status < 300
 
     @staticmethod
-    def info(auth, id, params=None):
-        return api_call(auth, "GET", "https://{}/api/admin/users/{}".format(YOUTRACK_URL, id), params=params).json()
+    def info(auth, id):
+        return api_call(auth, "GET", "https://{}/api/admin/users/{}".format(YOUTRACK_URL, id), params={"fields": "name"}).json()
 
 
 class Issue(object):
