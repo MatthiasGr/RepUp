@@ -42,7 +42,7 @@ class User(object):
 
     @staticmethod
     def info(auth, id):
-        return api_call(auth, "GET", "https://{}/api/admin/users/{}".format(YOUTRACK_URL, id), params={"fields": "name"}).json()
+        return api_call(auth, "GET", "https://{}/api/admin/users/{}".format(YOUTRACK_URL, id), params={"fields": "name,id,avatarUrl"}).json()
 
 
 class Issue(object):
@@ -66,5 +66,5 @@ class Issue(object):
             auth,
             "GET",
             "https://{}/api/issues".format(YOUTRACK_URL),
-            params={"fields": "id,resolved,fields(projectCustomField(field(name)),value(name))"}
+            params={"fields": "id,resolved,fields(projectCustomField(field(name)),value(id,name))"}
         ).json()

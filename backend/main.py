@@ -20,7 +20,7 @@ app.secret_key = b'ZsaRkUmTSumtrk94gQ4edHf5AFYEWR4n'
 # API Routes
 @app.route("/api/user/login", methods=["POST"])
 def login():
-    token = request.json()["token"]
+    token = request.json["token"]
     auth = YouTrackAuthorization(token)
     # Test auth using our YouTrack api
     if yt.User.check_token(auth):
@@ -34,6 +34,11 @@ def logout():
     session["token"] = None
     return json.dumps("OK")
 
+
+@app.route("/api/user/me", methods=["GET"])
+def me():
+    auth = YouTrackAuthorization(session["token"])
+    return yt.User.info(auth, "me")
 
 @app.route("/api/leaderboard", methods=["GET"])
 def leaderboard():
