@@ -38,7 +38,21 @@ def logout():
 @app.route("/api/user/me", methods=["GET"])
 def me():
     auth = YouTrackAuthorization(session["token"])
-    return yt.User.info(auth, "me")
+    raw = yt.User.info(auth, "me")
+
+    def get_points():
+        try:
+            it = next((x for x in helper.Query.getUserPoints() if x["id"] == raw["id"]))
+            return it[1]
+        except StopIteration:
+            return 0
+    points = get_points()
+    return {
+        "name": raw["name"],
+        "avatarUrl": raw["avatarUrl"],
+        "score": points
+    }
+
 
 @app.route("/api/leaderboard", methods=["GET"])
 def leaderboard():
