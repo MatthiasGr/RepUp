@@ -47,11 +47,13 @@ class Insert:
         if not Insert.existing_user(userID):
             Insert.newUser(userID)
             #return f'User {userID} does not exist'
-        existing_issue = PendingReg.query.filter(PendingReg.userID == userID and PendingReg.pending_issueID == issueID)
+        existing_issue = PendingReg.query.filter(PendingReg.userID == userID and PendingReg.pending_issueID == issueID).first()
         if existing_issue:
+            print(f'Issue {issueID} already pending for User {userID}')
             return f'Issue {issueID} already pending for User {userID}'
         new_issue = PendingReg(userID=userID, pending_issueID=issueID, time_of_pending=time_of_pending)
         Insert.addDB(new_issue)
+        print(f'Issue {issueID} successfully added to User {userID}')
         return f'Issue {issueID} successfully added to User {userID}'
 
     @staticmethod
@@ -89,6 +91,7 @@ class Update:
     def remove_pending(pendingIssue):
         db.session.delete(pendingIssue)
         db.session.commit()
+        print('Deletion of pending successful')
 
     @staticmethod
     def remove_user(userID):
@@ -97,10 +100,11 @@ class Update:
         db.session.delete(PointsReg.query.filter(PointsReg.userID==userID).first())
         #db.session.delete(AchievementReg.query.filter(AchievementReg.userID==userID).first())
         db.session.commit()
+        print('Deletion of user successful')
 
 
 class Query:
     @staticmethod
     def getUserPoints():
         basic_users = PointsReg.query.all()
-        return list(map(lambda x : x.convert(), basic_users))
+        return list(map(lambda x: x.convert(), basic_users))
