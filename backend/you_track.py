@@ -22,5 +22,8 @@ def api_call(auth, method, endpoint, payload, params=None):
         # TODO: THIS MUST THROW!
         auth.refresh_authorization()
         # This cannot fail, right?
-        api_call(auth, method, endpoint, payload, params)
-    pass
+        res = api_call(auth, method, endpoint, payload, params)
+
+    if res.status_code < 200 or res.status_code >= 300:
+        raise Exception("API Request failed: {}", res)
+    return res
