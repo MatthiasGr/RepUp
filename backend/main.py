@@ -38,10 +38,11 @@ def logout():
 @app.route("/api/leaderboard", methods=["GET"])
 def leaderboard():
     auth = YouTrackAuthorization(session["token"])
-    #TODO: Update database entries
-    #Get leaders from database
+    # TODO: Update database entries
+    # Get leaders from database
     entries = helper.Query.getUserPoints()
     entries = entries.sort(lambda x: x[1])[:10]
+
     def mapper(ent):
         data = yt.User.info(auth, ent[0])
         return {"name": data["name"], "score": ent[1]}
