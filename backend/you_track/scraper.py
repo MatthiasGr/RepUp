@@ -39,7 +39,6 @@ def add_pending_to_db(auth, issues):
         user_id = user_id_container["value"]["id"]
 
         timestamp = get_timestamp_for_assignment(auth, issue_id)
-        print(user_id, issue_id, timestamp)
         Insert.newPendingIssue(user_id, issue_id, timestamp)
 
 
@@ -50,9 +49,7 @@ def update_db(auth):
     resolved = [x for x in raw if x["resolved"]]
     # TODO: Extract log for resolved data
 
-    #print(not_resolved)
     add_pending_to_db(auth, not_resolved)
-    print("---")
     print(resolved)
     """
     The "root" function of this module.
