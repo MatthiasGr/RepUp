@@ -103,7 +103,7 @@ export default function SignInSide() {
                                 variant="contained"
                                 color="primary"
                                 className='button'
-                                onClick={handleClick}
+                                onClick={handleClick.bind(this)}
                             >
                                 Sign In
                             </Button>
