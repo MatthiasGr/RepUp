@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, DateTime, VARCHAR
+from sqlalchemy import Column, Integer, VARCHAR
 from datetime import datetime
 from db import db
 
@@ -12,11 +12,14 @@ class PointsReg(db.Model):
     def __repr__(self):
         return f'<User {self.userID}>'
 
+    def convert(self):
+        return self.userID, self.points
+
 
 class AchievementReg(db.Model):
     userID = Column(VARCHAR(length=32), primary_key=True)
     achievementID = Column(Integer, primary_key=True)
-    time_of_achievement = Column(DateTime, default=datetime.utcnow)
+    time_of_achievement = Column(Integer)
 
     __tablename__ = 'achievementReg'
 
@@ -26,8 +29,8 @@ class AchievementReg(db.Model):
 
 class PendingReg(db.Model):
     userID = Column(VARCHAR(length=32), primary_key=True)
-    pending_issueID = Column(VARCHAR(length=32))
-    time_of_pending = Column(DateTime, default=datetime.utcnow)
+    pending_issueID = Column(VARCHAR(length=32), primary_key=True)
+    time_of_pending = Column(Integer)
 
     __tablename__ = 'pendingIssues'
 
