@@ -68,7 +68,7 @@ class Update:
     def updatePoints(userID, points):
         if not Insert.existing_user(userID):
             return f'User {userID} does not exist'
-        user = PointsReg.query.filter(userID == userID).first()
+        user = PointsReg.query.filter(PointsReg.userID == userID).first()
         user.points = points
         db.session.commit()
 
@@ -88,10 +88,10 @@ class Update:
 
     @staticmethod
     def remove_user(userID):
-        if not Insert.existing_user():
+        if not Insert.existing_user(userID):
             return f'User {userID} does not exist'
         db.session.delete(PointsReg.query.filter(PointsReg.userID==userID).first())
-        db.session.delete(AchievementReg.query.filter(AchievementReg.userID==userID).first())
+        #db.session.delete(AchievementReg.query.filter(AchievementReg.userID==userID).first())
         db.session.commit()
 
 
