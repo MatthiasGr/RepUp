@@ -117,6 +117,15 @@ class Update:
         print('Deletion of user successful')
 
     @staticmethod
+    def prio_convert(prio):
+        dict = {'Minor': 10,
+                'Normal': 20,
+                'Major': 30,
+                'Critical': 40,
+                'Show-stopper': 50}
+        return dict[prio]
+
+    @staticmethod
     def close_pending(issueID, ending_time, prio):
         pending = Update.get_pending(issueID=issueID)
         #print(pending.convert())
@@ -124,7 +133,7 @@ class Update:
             # difference in minutes
             diff = ending_time - pending.time_of_pending / 60000.0
 
-            points = Update.point_gen(diff, prio)
+            points = Update.point_gen(diff, Update.prio_convert(prio))
             Update.updatePoints(pending.userID, points)
             Update.inc_user_issue(pending.userID)
             Update.remove_pending(pending)
