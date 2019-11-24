@@ -10,7 +10,7 @@ import SwipeDialog from './dialogs/SwipeDialog';
 import Developers from "./developers";
 import Topbar from './Topbar';
 import Leaders from "./leaders";
-import StickyBox from "react-sticky-box/dist/esnext";
+//import StickyBox from "react-sticky-box/dist/esnext";
 import Account from './img/account.png';
 
 const styles = theme => ({
@@ -175,7 +175,7 @@ class Main extends Component {
             <React.Fragment>
                 <CssBaseline/>
                 <Topbar/>
-
+{/*
                 <StickyBox offsetTop={200} offsetBottom={20}>
                     <Grid style={right_box}>
                         <Paper className={classes.paper}>
@@ -197,7 +197,7 @@ class Main extends Component {
                           </Grid>
                         </Paper>
                     </Grid>
-                </StickyBox>
+                </StickyBox>*/}
 
                 <div className={classes.root}>
                     <Grid container justify="center">
