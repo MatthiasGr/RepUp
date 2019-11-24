@@ -116,7 +116,8 @@ class Main extends Component {
 
     componentDidMount() {
       // TODO: Correct URL for leaderboard
-        fetch('http://jsonplaceholder.typicode.com/users')
+        // http://jsonplaceholder.typicode.com/users
+        fetch('localhost:1234/api/leaderboard')
             .then(res => res.json())
             .then((data) => {
                 data = data.sort((a, b) => a.score - b.score)
@@ -125,7 +126,8 @@ class Main extends Component {
             .catch(console.log)
 
         // TODO: Correct URL for recents
-        fetch('http://jsonplaceholder.typicode.com/users')
+        // http://jsonplaceholder.typicode.com/users
+        fetch('localhost:1234/api/recents/')
             .then(res => res.json())
             .then((data) => {
                 data = data.sort((a, b) => a.score - b.score)
