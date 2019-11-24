@@ -41,6 +41,9 @@ class PendingReg(db.Model):
     def __repr__(self):
         return f'<Pending issues of {self.userID}>'
 
+    def convert(self):
+        return self.userID, self.pending_issueID, self.time_of_pending
+
 
 class AchievementCatalog(db.Model):
     achievementID = Column(Integer, primary_key=True)
