@@ -75,7 +75,7 @@ class Update:
         if not Insert.existing_user(userID):
             return f'User {userID} does not exist'
         user = PointsReg.query.filter(PointsReg.userID == userID).first()
-        user.points = points
+        user.points += points
         db.session.commit()
         print(f'Update Points for {userID} successful')
 
@@ -108,7 +108,7 @@ class Update:
     @staticmethod
     def close_pending(userID, issueID, ending_time, prio):
         pending = Update.get_pending(userID=userID, issueID=issueID)
-        print(pending.convert())
+        #print(pending.convert())
         if pending is not None:
             # difference in minutes
             diff = ending_time - pending.time_of_pending / 60000.0
@@ -121,7 +121,8 @@ class Update:
 
     @staticmethod
     def point_gen(number, prio):
-        return 2268 / (number ** (1 / float(5))) + prio
+        base_points = 2268 / (number ** (1 / float(5))) + prio
+        return base_points if base_points < 3600 * 10 else base_points + 500
 
 
 class Query:
@@ -141,3 +142,21 @@ class Query:
         #print(PendingReg.query.all())
         print(Query.getUserPoints())
         print(Query.getPendings())
+
+    @staticmethod
+    def isPending(issueID):
+        if not Update.existing_issue(issueID):
+            print(f'Issue {issueID} does not exist')
+            return False
+        return True
+
+
+class Delete:
+    @staticmethod
+    def clearDB():
+        PendingReg.query.delete()
+        AchievementReg.query.delete()
+        AchievementCatalog.query.delete()
+        PointsReg.query.delete()
+        db.session.commit()
+
