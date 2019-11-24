@@ -41,6 +41,13 @@ def add_pending_to_db(auth, issues):
         timestamp = get_timestamp_for_assignment(auth, issue_id)
         Insert.newPendingIssue(user_id, issue_id, timestamp)
 
+def sort_out_resolved_issues(auth, issues):
+    # TODO: Filter issues to those in the database
+    # TODO: Extract resolve time
+    # TODO: Calculate points
+    # TODO: Update database
+    pass
+
 
 def update_db(auth):
     raw = Issue.issues(auth)
@@ -50,7 +57,7 @@ def update_db(auth):
     # TODO: Extract log for resolved data
 
     add_pending_to_db(auth, not_resolved)
-    print(resolved)
+    sort_out_resolved_issues(auth, resolved)
     """
     The "root" function of this module.
     It will collect information on all issues on YouTrack, 
