@@ -123,7 +123,7 @@ class Update:
                 'Major': 30,
                 'Critical': 40,
                 'Show-stopper': 50}
-        return dict[prio]
+        return dict[prio] * 10
 
     @staticmethod
     def close_pending(issueID, ending_time, prio):
@@ -132,18 +132,19 @@ class Update:
         if pending is not None:
             # difference in minutes
             diff = ending_time - pending.time_of_pending / 60000.0
-
-            points = Update.point_gen(diff, Update.prio_convert(prio))
+            counter = Counter.query.filter(Counter.userID == pending.userID).first()
+            counter = counter.number_issues
+            points = Update.point_gen(diff, Update.prio_convert(prio), counter)
             Update.updatePoints(pending.userID, points)
-            Update.inc_user_issue(pending.userID)
             Update.remove_pending(pending)
+            Update.inc_user_issue(pending.userID)
             print(f'Successful closing')
         else:
             print(f'No pending found')
 
     @staticmethod
-    def point_gen(number, prio):
-        base_points = 2268 / (number ** (1 / float(5))) + prio
+    def point_gen(number, prio, counter):
+        base_points = 2268 / (number ** (1 / float(5))) + prio + (counter + 1) * 0.5
         return base_points if base_points < 3600 * 10 else base_points + 500
 
     @staticmethod
