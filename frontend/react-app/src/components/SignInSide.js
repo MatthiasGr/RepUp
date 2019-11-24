@@ -67,10 +67,10 @@ export default function SignInSide() {
         }*/
 
         xhr.onreadystatechange = function() {
-            if(this.readyState === 4 && this.status === 200){
+            if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
                 window.location.href = "http://localhost:3000/#/main";
             } else {
-                document.getElementById("login_error").innerText = "Error: API-Key incorrect!";
+                document.getElementById("login_error").innerText = "Error: API-Key incorrect or network issue!";
             }
         }
 
@@ -130,7 +130,7 @@ export default function SignInSide() {
                                 Sign In
                             </Button>
                         {/*</Link>*/}
-                        <p id={"login_error"}>Test</p>
+                        <p id={"login_error"}/>
                     </form>
                 </div>
             </Grid>
