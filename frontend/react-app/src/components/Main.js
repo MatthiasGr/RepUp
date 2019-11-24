@@ -127,7 +127,7 @@ class Main extends Component {
 
         // TODO: Correct URL for recents
         // http://jsonplaceholder.typicode.com/users
-        fetch('localhost:1234/api/recents/')
+        fetch('http://jsonplaceholder.typicode.com/users')
             .then(res => res.json())
             .then((data) => {
                 data = data.sort((a, b) => a.score - b.score)

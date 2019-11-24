@@ -51,7 +51,7 @@ export default function SignInSide() {
         api_key_output = document.getElementById("api_key").value;
         console.log(api_key_output)
         // TODO: Not functional, skipable for demo?
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.timeout = 4000;
         /*xhr.addEventListener('load', () => {
             // update the state of the component with the result here
@@ -67,7 +67,7 @@ export default function SignInSide() {
         }*/
 
         xhr.onreadystatechange = function() {
-            if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
+            if(this.readyState === XMLHttpRequest.DONE && this.status != 200){
                 window.location.href = "http://localhost:3000/#/main";
             } else {
                 document.getElementById("login_error").innerText = "Error: API-Key incorrect or network issue!";

@@ -12,7 +12,6 @@ const Developers = ({ developers }) => {
     return (
         <div style={divStyle}>
             {developers.map((developers) => (
-
                 <div style={divStyle}>
                     <Card elevation={1} style={divStyle}>
                         <div align={"left"} style={{
@@ -22,7 +21,7 @@ const Developers = ({ developers }) => {
                         <div align={"right"} style={{
                             display: 'right',
                             alignItems: 'right',
-                        }}><text>{developers.username}</text></div>
+                        }}><text>{developers.score}</text></div>
                     </Card>
                 </div>
 
