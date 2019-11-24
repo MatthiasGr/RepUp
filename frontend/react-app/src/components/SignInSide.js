@@ -53,7 +53,7 @@ export default function SignInSide() {
         // TODO: Not functional, skipable for demo?
         var xhr = new XMLHttpRequest();
         xhr.timeout = 4000;
-        xhr.addEventListener('load', () => {
+        /*xhr.addEventListener('load', () => {
             // update the state of the component with the result here
             console.log(xhr.responseText);
             if (xhr.status<='200'&&xhr.status<=300){
@@ -64,14 +64,22 @@ export default function SignInSide() {
         });
         const errorHandler = () => {
             document.getElementById("login_error").innerText = "Error: API-Key incorrect!";
+        }*/
+
+        xhr.onreadystatechange = function() {
+            if(this.readyState === 4 && this.status === 200){
+                window.location.href = "http://localhost:3000/#/main";
+            } else {
+                document.getElementById("login_error").innerText = "Error: API-Key incorrect!";
+            }
         }
 
-        xhr.addEventListener("error", errorHandler);
-        xhr.addEventListener("timeout", errorHandler)
+        //xhr.addEventListener("timeout", errorHandler)
 
         xhr.open('POST', 'localhost:1234/api/user/login');
         // send the request
         xhr.send(JSON.stringify({token: api_key_output}))
+
     }
 
 
