@@ -154,7 +154,7 @@ class Update:
         user = Counter.query.filter(PointsReg.userID == userID).first()
         user.number_issues += 1
         db.session.commit()
-        print(f'Update Points for {userID} successful')
+        print(f'Update counter for {userID} successful')
 
 
 class Query:
