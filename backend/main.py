@@ -1,6 +1,7 @@
 from flask import Flask, request, session
 from you_track.auth import YouTrackAuthorization
 import you_track.api as yt
+import you_track.scraper as scrape
 import json
 import db.helper as helper
 import os.path as path
@@ -20,7 +21,7 @@ app.secret_key = b'ZsaRkUmTSumtrk94gQ4edHf5AFYEWR4n'
 # API Routes
 @app.route("/api/user/login", methods=["POST"])
 def login():
-    token = request.json["token"]
+    token = request.get_json(force=True)["token"]
     auth = YouTrackAuthorization(token)
     # Test auth using our YouTrack api
     if yt.User.check_token(auth):
@@ -57,10 +58,10 @@ def me():
 @app.route("/api/leaderboard", methods=["GET"])
 def leaderboard():
     auth = YouTrackAuthorization(session["token"])
-    # TODO: Update database entries
+    scrape.update_db(auth)
     # Get leaders from database
     entries = helper.Query.getUserPoints()
-    entries = entries.sort(lambda x: x[1])[:10]
+    entries = list(reversed(sorted(entries, key=lambda x: x[1])))[:10]
 
     def mapper(ent):
         data = yt.User.info(auth, ent[0])

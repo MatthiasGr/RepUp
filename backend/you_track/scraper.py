@@ -1,5 +1,5 @@
 from .api import Issue
-from db.helper import Insert
+from db.helper import Insert, Query, Update
 
 
 def get_timestamp_for_assignment(auth, issue_id):
@@ -42,10 +42,30 @@ def add_pending_to_db(auth, issues):
         Insert.newPendingIssue(user_id, issue_id, timestamp)
 
 def sort_out_resolved_issues(auth, issues):
-    # TODO: Filter issues to those in the database
-    # TODO: Extract resolve time
-    # TODO: Calculate points
-    # TODO: Update database
+    issues = [x for x in issues if Query.isPending(x["id"])]
+    for issue in issues:
+        changes = Issue.changes(auth, issue["id"])
+        print(changes)
+        # Find resolved date
+        resolved_ts = None
+        try:
+            container = next((x for x in reversed(changes["activities"]) if x["$type"] == "IssueResolvedActivityItem"))
+            resolved_ts = container["timestamp"]
+        except StopIteration:
+            print("Should not happen")
+            continue
+
+        priority = "Normal"
+
+        def check_for_prio(x):
+            return x["$type"] == "CustomFieldActivityItem" and x["targetMember"] == "__CUSTOM_FIELD__Priority_1"
+        try:
+            custom_field = next((x for x in reversed(changes["activities"]) if check_for_prio(x)))
+            priority = next((x["name"] for x in custom_field["added"]))
+        except StopIteration:
+            pass
+
+        Update.close_pending(issue["id"], resolved_ts, priority)
     pass
 
 
@@ -54,12 +74,6 @@ def update_db(auth):
     not_resolved = [x for x in raw if not x["resolved"]]
 
     resolved = [x for x in raw if x["resolved"]]
-    # TODO: Extract log for resolved data
 
     add_pending_to_db(auth, not_resolved)
     sort_out_resolved_issues(auth, resolved)
-    """
-    The "root" function of this module.
-    It will collect information on all issues on YouTrack, 
-    """
-    pass
