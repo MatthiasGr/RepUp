@@ -8,18 +8,6 @@ let divStyle = {
     textAlign: "center"
 };
 
-let rightBound = {
-    align: "right",
-};
-
-let leftBound = {
-    align: "left",
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-};
-
-
 const Developers = ({ developers }) => {
     return (
         <div style={divStyle}>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Card from "@material-ui/core/Card";
 import Account from "./img/account.png";
 
 let divStyle = {

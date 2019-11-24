@@ -15,7 +15,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { Link as MaterialLink } from '@material-ui/core'
 import Menu from './Menu';
-import Account from './img/account.png';
 import Logout from './img/logout.png';
 import RepUp from './img/method-draw-image.svg'
 

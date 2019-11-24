@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createRef, useRef} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,15 +12,14 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Text from "recharts/lib/component/Text";
 
 const useStyles = makeStyles(theme => ({
     root: {
         height: '100vh',
     },
     image: {
-        // backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
-        // backgroundColor: theme.palette.grey[50],
         backgroundColor: '#707070',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -49,14 +48,30 @@ export default function SignInSide() {
     let api_key_output;
 
     function handleClick() {
-        api_key_output =  this.refs.api_textfield.value;
+        api_key_output = document.getElementById("api_key").value;
+        console.log(api_key_output)
+        // TODO: Not functional, skipable for demo?
         var xhr = new XMLHttpRequest();
+        xhr.timeout = 4000;
         xhr.addEventListener('load', () => {
             // update the state of the component with the result here
-            console.log(xhr.responseText)
+            console.log(xhr.responseText);
+            if (xhr.status<='200'&&xhr.status<=300){
+                window.location.href = "http://localhost:3000/#/main";
+            } else {
+            }
+
         });
+        const errorHandler = () => {
+            document.getElementById("login_error").innerText = "Error: API-Key incorrect!";
+        }
+
+        xhr.addEventListener("error", errorHandler);
+        xhr.addEventListener("timeout", errorHandler)
+
+        xhr.open('POST', 'localhost:1234/api/user/login');
         // send the request
-        xhr.send(JSON.stringify({token: api_key}))
+        xhr.send(JSON.stringify({token: api_key_output}))
     }
 
 
@@ -83,20 +98,19 @@ export default function SignInSide() {
                             name="api_key"
                             autoComplete="api_key"
                             autoFocus
-                            ref={"api_textfield"}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Link
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className='button'
-                            to={'/main'}
-                        >
+                        {/*<Link*/}
+                        {/*    type="submit"*/}
+                        {/*    fullWidth*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    className='button'*/}
+                        {/*    to={'/main'}*/}
+                        {/*>*/}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -107,7 +121,8 @@ export default function SignInSide() {
                             >
                                 Sign In
                             </Button>
-                        </Link>
+                        {/*</Link>*/}
+                        <p id={"login_error"}>Test</p>
                     </form>
                 </div>
             </Grid>

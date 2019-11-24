@@ -7,13 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import InstructionDialog from './dialogs/InstructionDialog';
 import SwipeDialog from './dialogs/SwipeDialog';
-import Developers from "./developers";
 import Topbar from './Topbar';
-import Leaders from "./leaders";
-import StickyBox from "react-sticky-box/dist/esnext";
-import Account from './img/account.png';
 
-const styles = theme => ({
+
+const styles1 = theme => ({
     root: {
         flexGrow: 1,
         overflow: 'hidden',
@@ -98,53 +95,14 @@ const styles = theme => ({
 
 });
 
-const right_box = {
-    width: "300px",
-  paddingRight: "70px",
-    float: "right",
-    zIndex: "5",
-};
-
-class Main extends Component {
+class Info extends Component {
 
     state = {
         learnMoredialog: false,
         getStartedDialog: false,
-        leaders: [],
-        developers: []
     };
 
     componentDidMount() {
-      // TODO: Correct URL for leaderboard
-        fetch('http://jsonplaceholder.typicode.com/users')
-            .then(res => res.json())
-            .then((data) => {
-                data = data.sort((a, b) => a.score - b.score)
-                this.setState({leaders: data})
-            })
-            .catch(console.log)
-
-        // TODO: Correct URL for recents
-        fetch('http://jsonplaceholder.typicode.com/users')
-            .then(res => res.json())
-            .then((data) => {
-                data = data.sort((a, b) => a.score - b.score)
-                this.setState({developers: data})
-            })
-            .catch(console.log)
-
-        // TODO: insert "Me"-URL
-        this.getData()
-    }
-
-  getData(url) {
-    let xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', () => {
-      // TODO: Fix API call
-      // return JSON.parse(xhr.responseText)
-    });
-    xhr.open('GET', url)
-    xhr.send()
     }
 
     openDialog = (event) => {
@@ -165,40 +123,12 @@ class Main extends Component {
 
     render() {
         const {classes} = this.props;
-        let persName = document.getElementById('persName');
-        let persPoints = document.getElementById('persPoints');
-
-        this.getData()
 
 
         return (
             <React.Fragment>
                 <CssBaseline/>
                 <Topbar/>
-
-                <StickyBox offsetTop={200} offsetBottom={20}>
-                    <Grid style={right_box}>
-                        <Paper className={classes.paper}>
-                          <Grid container spacing={"12"}>
-                            <Grid item xs={"3"}>
-                              <img src={Account}/>
-                            </Grid>
-                            <Grid item xs={"9"}>
-                            <div className={classes.box} xs>
-                                <Typography style={{textTransform: 'uppercase'}} color='secondary' gutterBottom>
-                                    You
-                                </Typography>
-                                <Typography variant="body2" gutterBottom>
-                                  <text id={"persName"}>First Lastname</text> <br/>
-                                  <text id={"persPoints"}>420pts</text>
-                                </Typography>
-                            </div>
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                    </Grid>
-                </StickyBox>
-
                 <div className={classes.root}>
                     <Grid container justify="center">
                         <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
@@ -208,26 +138,12 @@ class Main extends Component {
                                         <div>
                                             <div className={classes.box}>
                                                 <Typography color='primary' gutterBottom>
-                                                    <h2>Leaderboard</h2>
-                                                    <Leaders leaders={this.state.leaders}/>
+                                                    <h2>How this works</h2>
+                                                    <text>Lorem Ipsum</text>
                                                 </Typography>
                                             </div>
                                         </div>
                                     </Paper>
-                                </Grid>
-                            </Grid>
-                            <Grid container item xs={12}>
-                                <Grid item xs={12}>
-                                    <div>
-                                        <div className={classes.box}>
-                                            <Typography color='secondary' gutterBottom>
-                                                Recent Activity
-                                            </Typography>
-                                            <Typography variant="body1" gutterBottom>
-                                                <Developers developers={this.state.developers}/>
-                                            </Typography>
-                                        </div>
-                                    </div>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -245,4 +161,4 @@ class Main extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(Main));
+export default withRouter(withStyles(styles1)(Info));
