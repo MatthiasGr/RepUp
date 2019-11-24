@@ -32,7 +32,7 @@ class AchievementReg(db.Model):
 
 
 class PendingReg(db.Model):
-    userID = Column(VARCHAR(length=32), primary_key=True)
+    userID = Column(VARCHAR(length=32))
     pending_issueID = Column(VARCHAR(length=32), primary_key=True)
     time_of_pending = Column(Integer)
 
@@ -53,4 +53,17 @@ class AchievementCatalog(db.Model):
 
     def __repr__(self):
         return f'<Achievement {self.achievementID}>'
+
+
+class Counter(db.Model):
+    userID = Column(VARCHAR(length=32), primary_key=True)
+    number_issues = Column(Integer)
+
+    __tablename__ = 'counter'
+
+    def __repr__(self):
+        return f'<User {self.userID} has {self.number_issues} issues resolved>'
+
+    def convert(self):
+        return self.userID, self.number_issues
 

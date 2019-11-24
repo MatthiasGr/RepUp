@@ -6,6 +6,7 @@ import sys
 sys.path.append("..")
 from main import db
 
+
 class Insert:
     @staticmethod
     def existing_user(userID):
@@ -25,7 +26,9 @@ class Insert:
         if Insert.existing_user(userID):
             return f'User {userID} already exists'
         new_user = PointsReg(userID=userID, points=0)
+        new_user_counter = Counter(userID=userID, number_issues=0)
         Insert.addDB(new_user)
+        Insert.addDB(new_user_counter)
         return f'User {userID} successfully created'
 
     @staticmethod
@@ -91,6 +94,14 @@ class Update:
         return pending_issue
 
     @staticmethod
+    def get_pending(issueID):
+        if not Update.existing_issue(issueID):
+            print(f'Issue {issueID} does not exist')
+            return None
+        pending_issue = PendingReg.query.filter(PendingReg.pending_issueID == issueID).first()
+        return pending_issue
+
+    @staticmethod
     def remove_pending(pendingIssue):
         db.session.delete(pendingIssue)
         db.session.commit()
@@ -106,14 +117,16 @@ class Update:
         print('Deletion of user successful')
 
     @staticmethod
-    def close_pending(userID, issueID, ending_time, prio):
-        pending = Update.get_pending(userID=userID, issueID=issueID)
+    def close_pending(issueID, ending_time, prio):
+        pending = Update.get_pending(issueID=issueID)
         #print(pending.convert())
         if pending is not None:
             # difference in minutes
             diff = ending_time - pending.time_of_pending / 60000.0
+
             points = Update.point_gen(diff, prio)
-            Update.updatePoints(userID, points)
+            Update.updatePoints(pending.userID, points)
+            Update.inc_user_issue(pending.userID)
             Update.remove_pending(pending)
             print(f'Successful closing')
         else:
@@ -123,6 +136,15 @@ class Update:
     def point_gen(number, prio):
         base_points = 2268 / (number ** (1 / float(5))) + prio
         return base_points if base_points < 3600 * 10 else base_points + 500
+
+    @staticmethod
+    def inc_user_issue(userID):
+        if not Insert.existing_user(userID):
+            return f'User {userID} does not exist'
+        user = Counter.query.filter(PointsReg.userID == userID).first()
+        user.number_issues += 1
+        db.session.commit()
+        print(f'Update Points for {userID} successful')
 
 
 class Query:
@@ -137,11 +159,17 @@ class Query:
         return list(map(lambda x: x.convert(), basic_pendings))
 
     @staticmethod
+    def getCounters():
+        basic_counters = Counter.query.all()
+        return list(map(lambda x: x.convert(), basic_counters))
+
+    @staticmethod
     def showDB():
         #print(PointsReg.query.all())
         #print(PendingReg.query.all())
         print(Query.getUserPoints())
         print(Query.getPendings())
+        print(Query.getCounters())
 
     @staticmethod
     def isPending(issueID):
@@ -158,5 +186,6 @@ class Delete:
         AchievementReg.query.delete()
         AchievementCatalog.query.delete()
         PointsReg.query.delete()
+        Counter.query.delete()
         db.session.commit()
 
