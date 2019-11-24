@@ -27,11 +27,11 @@ const Leaders = ({ leaders }) => {
                         <div align={"left"} style={{
                             display: 'flex',
                             alignItems: 'center',
-                        }}><img src={Account} alt={"Account"}/><text>{developers.score}</text></div>
+                        }}><img src={Account} alt={"Account"}/><text>{developers.name}</text></div>
                         <div align={"right"} style={{
                             display: 'right',
                             alignItems: 'right',
-                        }}><text>{developers.username}</text></div>
+                        }}><text>{developers.score}</text></div>
                 </div>
 
             ))}
